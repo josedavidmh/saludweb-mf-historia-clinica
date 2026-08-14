@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>mf-historia-clinica — SaludWeb SaaS</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background: #F8FAFC; color: #1F2937; }
+  .franja { background: #1F4E78; color: white; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; }
+  .franja h1 { font-size: 16px; margin: 0; }
+  .contenedor { max-width: 880px; margin: 0 auto; padding: 24px; }
+  .tarjeta { background: white; border-radius: 10px; padding: 20px 24px; box-shadow: 0 1px 4px rgba(0,0,0,.08); margin-bottom: 20px; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 999px; white-space: nowrap; }
+  .pill-ok { background: #DCFCE7; color: #16A34A; border: 1px solid #86EFAC; }
+  .pill-mf { background: #DCEAFE; color: #2563EB; border: 1px solid #93C5FD; font-family: monospace; }
+  .enlace { display: inline-block; margin-top: 12px; color: #2563EB; text-decoration: none; font-size: 14px; font-weight: 600; }
+  .enlace:hover { text-decoration: underline; }
+  .nota { font-size: 13px; color: #6B7280; line-height: 1.7; }
+  code { background: #F1F5F9; padding: 2px 6px; border-radius: 4px; font-size: 12px; }
+  h2 { margin: 14px 0 6px; }
+</style>
+</head>
+<body>
+  <div class="franja">
+    <h1>🩺 SaludWeb SaaS</h1>
+    <span class="pill pill-mf">● microfrontend: mf-historia-clinica</span>
+  </div>
+  <div class="contenedor">
+    <div class="tarjeta">
+      <span class="pill pill-ok">✅ Microfrontend activo y funcionando</span>
+      <h2>mf-historia-clinica</h2>
+      <p class="nota">
+        Microfrontend de dominio <b>Historia clínica</b> (wizard de 3 pasos: Antecedentes →
+        Consulta → Procedimientos) de SaludWeb SaaS, desplegado y versionado de forma
+        independiente del Shell (Actividad 3). Lo que ves debajo es este módulo corriendo de
+        forma standalone, con su propio Flux — no es una simulación.
+      </p>
+      <p class="nota">
+        Los pacientes que aparecen en "Buscar paciente" son los mismos registrados en
+        mf-admisiones, y los profesionales los mismos del Shell, compartidos vía
+        <code>localStorage</code> bajo el mismo origen de GitHub Pages: registra uno en su
+        módulo de origen y aparecerá también aquí, sin necesidad de recargar.
+      </p>
+      <a class="enlace" href="https://josedavidmh.github.io/saludweb-shell-mf/historia-clinica/">→ Ver este mismo módulo integrado dentro del Shell completo</a>
+    </div>
+    <div class="tarjeta" id="root"></div>
+  </div>
+  <script src="./mf-historia-clinica.umd.js"></script>
+  <script>
+    if (window.SaludWebMFHistoriaClinica) {
+      window.SaludWebMFHistoriaClinica.mount(document.getElementById("root"));
+    }
+  </script>
+</body>
+</html>
