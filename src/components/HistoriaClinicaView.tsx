@@ -1,7 +1,7 @@
 import { useEffect, useState, type CSSProperties, type FormEvent } from "react";
 import { useStore } from "../useStore";
 import { historiaClinicaStore } from "../stores/historiaClinicaStore";
-import { pacientesStore, type PacienteDisponible } from "../stores/pacientesStore";
+import { pacientesStore, cargarPacientesDisponibles, type PacienteDisponible } from "../stores/pacientesStore";
 import { iniciarEscuchaDeEventosExternos } from "../eventBus";
 import { obtenerProfesionalesAPI, type Profesional } from "../services/servicioProfesionales";
 import { Modal } from "./Modal";
@@ -34,6 +34,10 @@ export function HistoriaClinicaView() {
   useEffect(() => {
     iniciarEscuchaDeEventosExternos();
     cargarAtenciones();
+    // Lectura fresca desde localStorage: garantiza ver los pacientes
+    // admitidos aunque el evento en vivo de mf-admisiones se haya perdido
+    // (por ejemplo, si se entró primero a esta página).
+    cargarPacientesDisponibles();
   }, []);
 
   return (
@@ -56,11 +60,12 @@ export function HistoriaClinicaView() {
 }
 
 // Restaura el patrón de modales "Buscar paciente" / "Buscar profesional"
-// del repositorio original (Actividad 2), pero cada uno con su propia
-// fuente de datos: pacientesStore se alimenta EN VIVO del evento
-// saludweb:admision-registrada emitido por mf-admisiones (comunicación
-// real entre microfrontends); profesionales usa una copia local propia
-// de este microfrontend (ver nota en servicioProfesionales.ts).
+// del repositorio original (Actividad 2). Ambas listas se leen de
+// localStorage bajo un contrato de clave compartido (saludweb:admisiones
+// y saludweb:profesionales, respectivamente) para que la información sea
+// coherente sin importar el orden de navegación entre microfrontends;
+// el CustomEvent saludweb:admision-registrada sigue activo como mejora
+// adicional para actualizaciones en vivo dentro de la misma sesión.
 function IniciarAtencionForm() {
   const pacientes = useStore(
     (l) => pacientesStore.subscribe(l),
